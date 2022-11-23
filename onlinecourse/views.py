@@ -115,10 +115,14 @@ def submit(request, course_id):
     user = request.user
     enrollment = Enrollment.objects.get(user=user, course=course)
    
-    if enrollment is not none:
+    if enrollment is not None:
         # Create an enrollment
+        submission = Submission.objects.create(enrollment=enrollment)
         choice_ids = extract_answers(request)
-        Submission.objects.create(enrollment=enrollment, choices=choice_ids)
+        for cid in choice_ids:
+            choice = Choice.objects.get(id=cid)
+            submission.choices.add(choice)
+        submission.save()
     return HttpResponseRedirect(reverse(viewname='onlinecourse:show_exam_result', args=(course.id,submission.id)))
 
 
@@ -142,7 +146,7 @@ def extract_answers(request):
 def show_exam_result(request, course_id, submission_id):
     course = get_object_or_404(Course, pk=course_id)
     submission = get_object_or_404(Submission, pk=submission_id)
-    choices = submission.choices
+    choices = submission.choices.all()
     grade = 0
     for choice in choices:
         if choice.is_correct:
