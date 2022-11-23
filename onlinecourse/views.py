@@ -142,10 +142,11 @@ def show_exam_result(request, course_id, submission_id):
     course = get_object_or_404(Course, pk=course_id)
     submission = get_object_or_404(Submission, pk=submission_id)
     choices = submission.choices
-    total_score = 0
+    grade = 0
     for choice in choices:
         if choice.is_correct:
-             total_score += 1
-    return total_score
+             grade += 1
+    return HttpResponseRedirect(reverse(viewname='onlinecourse:show_exam_result', args=(course.id,submission.id)))
+
 
 
