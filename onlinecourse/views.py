@@ -161,7 +161,8 @@ def show_exam_result(request, course_id, submission_id):
         selected_ids.append(choice.id)
         is_valid = choice.question.is_get_score(selected_ids)
         if is_valid:
-             grade += 1      
+             grade += 1   
+    context['grade_value'] = grade / totalq * 100
     context['grade'] = "{0:.0f}".format(grade / totalq * 100)
     context['course'] = course
     context['submission'] = submission
