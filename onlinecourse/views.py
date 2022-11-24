@@ -153,8 +153,8 @@ def show_exam_result(request, course_id, submission_id):
     selected_ids = []
     valid_choice_ids = []
 
-    for question in course.questions.all:
-        for choice in question.choices:
+    for question in course.question_set.all():
+        for choice in question.choice_set.all():
             valid_choice_ids.append(choice.id)
 
     for choice in choices:

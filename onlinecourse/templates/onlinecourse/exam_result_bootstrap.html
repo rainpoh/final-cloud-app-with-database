@@ -37,11 +37,11 @@
 
 <div class="container-fluid">
     {% if grade > 80 %}
-    <div class="alert alert-success">
-       <!--HINT Display passed info -->
-       <p><b>Congratulation, {{user.username}}!</b> You have passed the exam and completed the course with score {{grade}}/100 </p>
-    </div>
-        {% else %}
+        <div class="alert alert-success">
+        <!--HINT Display passed info -->
+        <p><b>Congratulation, {{user.username}}!</b> You have passed the exam and completed the course with score {{grade}}/100 </p>
+        </div>
+    {% else %}
         <div class="alert alert-danger">
             <!--HINT Display failed info -->
             <p><b>Failed</b> Sorry, {{user.username}}! You have failed exam with score {{grade}}/100</p>
