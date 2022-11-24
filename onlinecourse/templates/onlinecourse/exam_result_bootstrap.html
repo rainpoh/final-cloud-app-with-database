@@ -51,24 +51,49 @@
         <div class="card-columns-vertical mt-1">
         <h5 class="">Exam results</h5>
             <!--HINT Display exam results-->
-            {% for question in course.questions.all %}
+            {% for question in course.question_set.all %}
             <div class="card mt-1">
-                <div class="card-header"><h5>{{ question.question_text}}</h5></div>
+                <div class="card-header"><h5>{{ question.content}}</h5></div>
                 {% csrf_token %}
                 <div class="card-body">
-                    {% for choice in question.choices %}
+                    {% for choice in question.choice_set.all %}
                         {% if choice.is_correct %}
                             <!-- green css -->
-                            {{choice.content}}
+                            <p class="text-success">{{choice.content}}</p>
                         {% else %}
                             <!-- black css -->
+                            <p class="">{{choice.content}}</p>
                         {% endif %}
                     {% endfor %}  
                     
                 </div>
             </div>
             {% endfor %}
-        </div>
+<!-- 
+---------------------
+            {% for choice in submission.choices.all %}
+            <div class="card mt-1">
+                <div class="card-header"><h5>{{ choice.question.content}}</h5></div>
+                {% csrf_token %}
+                <div class="card-body">
+                    {% for choice_opt in question.choices.all %}
+                        {% if choice.is_correct %}
+                            {% if choice.id == choice_opt.id %}
+                                <!-- green css -->
+                                <p class="text-success">{{choice.content}}</p>                   
+                            {% else %}
+                                <!-- yellow css -->
+                                <p class="text-warning">{{choice.content}}</p>
+                              
+                            {% endif %}
+                        {% else %} 
+                            <p class="">{{choice.content}}</p>      
+                        {% endif %}
+                    {% endfor %}  
+                </div>
+            </div>
+            {% endfor %}
+        </div> -->
     </div>
 </body>
 </html>

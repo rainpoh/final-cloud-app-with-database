@@ -123,7 +123,7 @@ def submit(request, course_id):
             choice = Choice.objects.get(id=cid)
             submission.choices.add(choice)
         submission.save()
-    return HttpResponseRedirect(reverse(viewname='onlinecourse:show_exam_result', args=(course.id,submission.id)))
+    return HttpResponseRedirect(reverse(viewname='onlinecourse:show_exam_result', args=(course.id, submission.id)))
 
 
 # <HINT> A example method to collect the selected choices from the exam form from the request object
@@ -144,15 +144,18 @@ def extract_answers(request):
         # For each selected choice, check if it is a correct answer or not
         # Calculate the total score
 def show_exam_result(request, course_id, submission_id):
+    context = {}
     course = get_object_or_404(Course, pk=course_id)
     submission = get_object_or_404(Submission, pk=submission_id)
     choices = submission.choices.all()
     grade = 0
+    totalq = course.question_set.count()
+    selected_ids = []
     for choice in choices:
-        if choice.is_correct:
-             grade += 1
-    return grade
-    #return HttpResponseRedirect(reverse(viewname='onlinecourse:show_exam_result', args=(course.id,submission.id)))
-
-
-
+        selected_ids.append(choice.id)
+        if choice.question.is_get_score(selected_ids):
+             grade += 1      
+    context['grade'] = "{0:.0f}".format(grade / totalq * 100)
+    context['course'] = course
+    context['submission'] = submission
+    return render(request, 'onlinecourse/exam_result_bootstrap.html', context)
