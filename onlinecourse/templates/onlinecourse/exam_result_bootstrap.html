@@ -58,8 +58,13 @@
                 <div class="card-body">
                     {% for choice in question.choice_set.all %}
                         {% if choice.is_correct %}
-                            <!-- green css -->
-                            <p class="text-success">{{choice.content}}</p>
+                            {% if choice.id in selected_choice_ids %}
+                                <!-- green css -->
+                                <p class="text-success">Correct answer: {{choice.content}}</p>
+                            {% else %}
+                                <!-- yello2 css -->
+                                <p class="text-warning">Not selected: {{choice.content}}</p>
+                            {% endif %}
                         {% else %}
                             <!-- black css -->
                             <p class="">{{choice.content}}</p>
@@ -69,31 +74,6 @@
                 </div>
             </div>
             {% endfor %}
-<!-- 
----------------------
-            {% for choice in submission.choices.all %}
-            <div class="card mt-1">
-                <div class="card-header"><h5>{{ choice.question.content}}</h5></div>
-                {% csrf_token %}
-                <div class="card-body">
-                    {% for choice_opt in question.choices.all %}
-                        {% if choice.is_correct %}
-                            {% if choice.id == choice_opt.id %}
-                                <!-- green css -->
-                                <p class="text-success">{{choice.content}}</p>                   
-                            {% else %}
-                                <!-- yellow css -->
-                                <p class="text-warning">{{choice.content}}</p>
-                              
-                            {% endif %}
-                        {% else %} 
-                            <p class="">{{choice.content}}</p>      
-                        {% endif %}
-                    {% endfor %}  
-                </div>
-            </div>
-            {% endfor %}
-        </div> -->
     </div>
 </body>
 </html>

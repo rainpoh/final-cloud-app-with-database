@@ -151,11 +151,20 @@ def show_exam_result(request, course_id, submission_id):
     grade = 0
     totalq = course.question_set.count()
     selected_ids = []
+    valid_choice_ids = []
+
+    for question in course.questions.all:
+        for choice in question.choices:
+            valid_choice_ids.append(choice.id)
+
     for choice in choices:
         selected_ids.append(choice.id)
-        if choice.question.is_get_score(selected_ids):
+        is_valid = choice.question.is_get_score(selected_ids)
+        if is_valid:
              grade += 1      
     context['grade'] = "{0:.0f}".format(grade / totalq * 100)
     context['course'] = course
     context['submission'] = submission
+    context['selected_choice_ids'] = selected_ids
+    context['valid_choice_ids'] = valid_choice_ids
     return render(request, 'onlinecourse/exam_result_bootstrap.html', context)
